@@ -2,8 +2,17 @@ const gameboard = (function() {
     const row1 = [null, null, null];
     const row2 = [null, null, null];
     const row3 = [null, null, null];
+    const columns = {
+        column1: [],
+        column2: [],
+        column3: [],
+    };
+    const diagonals = {
+        diagonal1: [],
+        diagonal2: [],
+    }
     const hasNull = {};
-    return {row1, row2, row3, hasNull};
+    return {row1, row2, row3, hasNull, columns, diagonals};
 })();
 
 function setPlayers(){
@@ -19,16 +28,16 @@ function setPlayers(){
 // may the god have mercy on my soul
 function checkWin(){
     let win = false;
-    if (gameboard.hasNull.row1 == "null" &&
-        gameboard.hasNull.row2 == "null" &&
-        gameboard.hasNull.row3 == "null"){
+    if (gameboard.hasNull.row1 == "full" &&
+        gameboard.hasNull.row2 == "full" &&
+        gameboard.hasNull.row3 == "full"){
             return win = "tie";
         }
     for (const row in gameboard) {
         if (row == "hasNull"){
             return;
         }
-        if ( gameboard.hasNull[row] == "null"){
+        if ( gameboard.hasNull[row] == "full"){
             continue;
         }
         if (gameboard.hasNull[row] == true && gameboard[row].includes(null)){
@@ -45,7 +54,101 @@ function checkWin(){
                 gameboard[row].reduce((total, current) => total + current) == 3){
                 return win = true
             } else {
-                gameboard.hasNull[row] = "null";
+                gameboard.hasNull[row] = "full";
+                return;
+            }
+        }
+    }
+}
+
+// double work lol
+function checkWinColumns(){
+    let win = false;
+    
+    // todo: better way to do this ?
+    gameboard.columns.column1[0] = gameboard.row1[0];
+    gameboard.columns.column1[1] = gameboard.row2[0];
+    gameboard.columns.column1[2] = gameboard.row3[0];
+
+    gameboard.columns.column2[0] = gameboard.row1[1];
+    gameboard.columns.column2[1] = gameboard.row2[1];
+    gameboard.columns.column2[2] = gameboard.row3[1];
+
+    gameboard.columns.column3[0] = gameboard.row1[2];
+    gameboard.columns.column3[1] = gameboard.row2[2];
+    gameboard.columns.column3[2] = gameboard.row3[2];
+
+    // i don't think this is necessary
+    if (gameboard.hasNull.column1 == "full" &&
+        gameboard.hasNull.column2 == "full" &&
+        gameboard.hasNull.column3 == "full"){
+            return win = "tie";
+        }
+
+    for (const column in gameboard.columns) {
+        if (gameboard.hasNull[column] == "full"){
+            continue;
+        }
+        if (gameboard.hasNull[column] == true && gameboard.columns[column].includes(null)){
+            continue;
+        }
+        if (gameboard.columns[column].includes(null)){
+            gameboard.hasNull[column] = true;
+            return;
+        } else {
+            gameboard.hasNull[column] = false;
+        }
+        if (gameboard.hasNull[column] == false){
+            if (gameboard.columns[column].reduce((total, current) => total + current) == 0 ||
+                gameboard.columns[column].reduce((total, current) => total + current) == 3){
+                return win = true
+            } else {
+                gameboard.hasNull[column] = "full";
+                return;
+            }
+        }
+    }
+}
+
+// triple work lol
+function checkWinDiagonals(){
+    let win = false;
+    
+    // todo: better way to do this ?
+    gameboard.diagonals.diagonal1[0] = gameboard.row1[0];
+    gameboard.diagonals.diagonal1[1] = gameboard.row2[1];
+    gameboard.diagonals.diagonal1[2] = gameboard.row3[2];
+
+    gameboard.diagonals.diagonal2[0] = gameboard.row1[2];
+    gameboard.diagonals.diagonal2[1] = gameboard.row2[1];
+    gameboard.diagonals.diagonal2[2] = gameboard.row3[0];
+
+    // i don't think this is necessary
+    if (gameboard.hasNull.diagonal1 == "full" &&
+        gameboard.hasNull.diagonal2 == "full" &&
+        gameboard.hasNull.diagonal3 == "full"){
+            return win = "tie";
+        }
+    
+    for (const diagonal in gameboard.diagonals) {
+        if (gameboard.hasNull[diagonal] == "full"){
+            continue;
+        }
+        if (gameboard.hasNull[diagonal] == true && gameboard.diagonals[diagonal].includes(null)){
+            continue;
+        }
+        if (gameboard.diagonals[diagonal].includes(null)){
+            gameboard.hasNull[diagonal] = true;
+            return;
+        } else {
+            gameboard.hasNull[diagonal] = false;
+        }
+        if (gameboard.hasNull[diagonal] == false){
+            if (gameboard.diagonals[diagonal].reduce((total, current) => total + current) == 0 ||
+                gameboard.diagonals[diagonal].reduce((total, current) => total + current) == 3){
+                return win = true
+            } else {
+                gameboard.hasNull[diagonal] = "full";
                 return;
             }
         }
@@ -71,9 +174,9 @@ function playGame(){
         gameboard[move[0]][move[1]] = players[player].sign;
         lastPlayed = player;
         console.table(gameboard);
-        if (checkWin()) {
+        if (checkWin() || checkWinColumns() || checkWinDiagonals()) {
             break;
-        } else if (checkWin() == "tie"){
+        } else if (checkWin() == "tie" || checkWinColumns() == "tie" || checkWinDiagonals() == "tie"){
             console.table(gameboard);
             console.log("It's a tie!")
             return;
