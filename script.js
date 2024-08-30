@@ -1,4 +1,5 @@
 const gameboard = (function() {
+    // why not put rows in an object as well?
     const row1 = [null, null, null];
     const row2 = [null, null, null];
     const row3 = [null, null, null];
@@ -42,6 +43,7 @@ function setPlayers(){
 *  the same thing repeated two more times. currently i cant
 *  (or rather dont want to) think of better solution, too bad!
 */
+
 function checkWinRows(){
     let win = false;
     if (gameboard.hasNull.row1 == "full" &&
@@ -94,13 +96,6 @@ function checkWinColumns(){
     gameboard.columns.column3[1] = gameboard.row2[2];
     gameboard.columns.column3[2] = gameboard.row3[2];
 
-    // i don't think this is necessary
-    if (gameboard.hasNull.column1 == "full" &&
-        gameboard.hasNull.column2 == "full" &&
-        gameboard.hasNull.column3 == "full"){
-            return win = "tie";
-        }
-
     for (const column in gameboard.columns) {
         if (gameboard.hasNull[column] == "full"){
             continue;
@@ -138,13 +133,6 @@ function checkWinDiagonals(){
     gameboard.diagonals.diagonal2[0] = gameboard.row1[2];
     gameboard.diagonals.diagonal2[1] = gameboard.row2[1];
     gameboard.diagonals.diagonal2[2] = gameboard.row3[0];
-
-    // i don't think this is necessary
-    if (gameboard.hasNull.diagonal1 == "full" &&
-        gameboard.hasNull.diagonal2 == "full" &&
-        gameboard.hasNull.diagonal3 == "full"){
-            return win = "tie";
-        }
     
     for (const diagonal in gameboard.diagonals) {
         if (gameboard.hasNull[diagonal] == "full"){
