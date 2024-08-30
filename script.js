@@ -26,7 +26,23 @@ function setPlayers(){
 };
 
 // may the god have mercy on my soul
-function checkWin(){
+
+/* 
+*  basically the way it works is that it checks whether or not 
+*  rows (and columns/diagonals) are full (which is absence of "null"'s)
+*  and then checks the sum of values in them.
+*  if result is 0 then p1 (O) has won, if 3, then p2 (X) has won.
+*  any other value means triplet is borked and ignored.
+*  if all triplets are borked it means game is a tie.
+*
+*  there are probably ways to do it more efficiently
+*  (like throwing a tie if some cells are empty but no win
+*   condition is possible) but as of now it works
+*
+*  the same thing repeated two more times. currently i cant
+*  (or rather dont want to) think of better solution, too bad!
+*/
+function checkWinRows(){
     let win = false;
     if (gameboard.hasNull.row1 == "full" &&
         gameboard.hasNull.row2 == "full" &&
@@ -174,9 +190,9 @@ function playGame(){
         gameboard[move[0]][move[1]] = players[player].sign;
         lastPlayed = player;
         console.table(gameboard);
-        if (checkWin() || checkWinColumns() || checkWinDiagonals()) {
+        if (checkWinRows() || checkWinColumns() || checkWinDiagonals()) {
             break;
-        } else if (checkWin() == "tie" || checkWinColumns() == "tie" || checkWinDiagonals() == "tie"){
+        } else if (checkWinRows() == "tie" || checkWinColumns() == "tie" || checkWinDiagonals() == "tie"){
             console.table(gameboard);
             console.log("It's a tie!")
             return;
