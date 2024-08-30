@@ -48,7 +48,12 @@ function checkWinRows(){
     let win = false;
     if (gameboard.hasNull.row1 == "full" &&
         gameboard.hasNull.row2 == "full" &&
-        gameboard.hasNull.row3 == "full"){
+        gameboard.hasNull.row3 == "full" &&
+        gameboard.hasNull.column1 == "full" &&
+        gameboard.hasNull.column2 == "full" &&
+        gameboard.hasNull.column3 == "full" &&
+        gameboard.hasNull.diagonal1 == "full" &&
+        gameboard.hasNull.diagonal2 == "full"){
             return win = "tie";
         }
     for (const row in gameboard) {
