@@ -1,20 +1,3 @@
-// i hate my fucking life and my dumb ass i just cant even think or just man just kill me im so done
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const gameboard = (function() {
     // why not put rows in an object as well?
     const row1 = [null, null, null];
@@ -34,6 +17,8 @@ const gameboard = (function() {
     return {row1, row2, row3, columns, diagonals, hasNull, lastPlayed};
 })();
 
+
+// not done yet
 const rows = (function() {
     const row1 = {},
           row2 = {},
@@ -217,6 +202,8 @@ function checkWinDiagonals(){
     }
 }
 
+
+// WORK IN PROGRESS
 function playGame(){
     let players;
     if (this.textContent == "Play!"){
