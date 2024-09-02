@@ -16,6 +16,23 @@ const gameboard = (function() {
     return {row1, row2, row3, hasNull, columns, diagonals};
 })();
 
+const rows = (function() {
+    const row1 = {},
+          row2 = {},
+          row3 = {};
+    
+    row1.dom = document.querySelector(".row1");
+    row1.dom = row1.dom.children;
+
+    row2.dom = document.querySelector(".row2");
+    row2.dom = row2.dom.children;
+
+    row3.dom = document.querySelector(".row3");
+    row3.dom = row3.dom.children;
+
+    return {row1, row2, row3}
+})();
+
 function setPlayers(){
     let p1 = {};
     let p2 = {};
@@ -31,7 +48,7 @@ function setPlayers(){
 /* 
 *  basically the way it works is that it checks whether or not 
 *  rows (and columns/diagonals) are full (which is absence of "null"'s)
-*  and then checks the sum of values in them.
+*  and then checks the sum of values in them (if they are full).
 *  if result is 0 then p1 (O) has won, if 3, then p2 (X) has won.
 *  any other value means triplet is borked and ignored.
 *  if all triplets are borked it means game is a tie.
@@ -170,6 +187,15 @@ function playGame(){
     console.table(gameboard);
     let player;
     let lastPlayed = null;
+
+    let row1dom = document.querySelector(".row1");
+        row1dom = row1dom.children;
+
+    let row2dom = document.querySelector(".row2");
+        row2dom = row2dom.children;
+
+    let row3dom = document.querySelector(".row3");
+        row3dom = row3dom.children;
     
     while(true){
         if (lastPlayed === "p1"){
@@ -177,21 +203,28 @@ function playGame(){
         } else {
             player = "p1";
         }
+        
         let move = prompt("Enter a row and index of a cell you want to play in:", "row1, 0");
         move = move.split(", ");
         move[1] = parseInt(move[1]);
         gameboard[move[0]][move[1]] = players[player].sign;
         lastPlayed = player;
         console.table(gameboard);
+
+        if (players[player].sign === 0){
+            rows[move[0]].dom[move[1]].innerText = "O";
+        } else {
+            rows[move[0]].dom[move[1]].innerText = "X";
+        }
+
         if (checkWinRows() || checkWinColumns() || checkWinDiagonals()) {
+            console.log(`Winner is ${lastPlayed}`);
+            console.table(gameboard);
             break;
         } else if (checkWinRows() == "tie" || checkWinColumns() == "tie" || checkWinDiagonals() == "tie"){
             console.table(gameboard);
             console.log("It's a tie!")
-            return;
+            break;
         }
     }
-
-    console.log(`Winner is ${lastPlayed}`);
-    console.table(gameboard);
 }
