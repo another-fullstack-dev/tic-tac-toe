@@ -33,11 +33,17 @@ const rows = (function() {
     return {row1, row2, row3}
 })();
 
+const btnPlay = document.querySelector(".play");
+      btnPlay.addEventListener("click", playGame);
+
+const p1Input = document.querySelector("#name-p1");
+const p2Input = document.querySelector("#name-p2");
+
 function setPlayers(){
     let p1 = {};
     let p2 = {};
-    p1.name = prompt("Enter a name of first player (O):");
-    p2.name = prompt("Enter a name of second player (X):");
+    p1.name = p1Input.value;
+    p2.name = p2Input.value;
     p1.sign = 0; // O
     p2.sign = 1; // X
     return {p1, p2};
@@ -187,15 +193,6 @@ function playGame(){
     console.table(gameboard);
     let player;
     let lastPlayed = null;
-
-    let row1dom = document.querySelector(".row1");
-        row1dom = row1dom.children;
-
-    let row2dom = document.querySelector(".row2");
-        row2dom = row2dom.children;
-
-    let row3dom = document.querySelector(".row3");
-        row3dom = row3dom.children;
     
     while(true){
         if (lastPlayed === "p1"){
