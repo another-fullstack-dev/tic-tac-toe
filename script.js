@@ -1,3 +1,20 @@
+// i hate my fucking life and my dumb ass i just cant even think or just man just kill me im so done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const gameboard = (function() {
     // why not put rows in an object as well?
     const row1 = [null, null, null];
@@ -13,7 +30,8 @@ const gameboard = (function() {
         diagonal2: [],
     }
     const hasNull = {};
-    return {row1, row2, row3, hasNull, columns, diagonals};
+    let lastPlayed = null;
+    return {row1, row2, row3, columns, diagonals, hasNull, lastPlayed};
 })();
 
 const rows = (function() {
@@ -23,12 +41,24 @@ const rows = (function() {
     
     row1.dom = document.querySelector(".row1");
     row1.dom = row1.dom.children;
+    row1.dom = Array.from(row1.dom);
+    row1.dom.forEach(element => {
+        element.addEventListener("click", playGame)
+    });
 
     row2.dom = document.querySelector(".row2");
     row2.dom = row2.dom.children;
+    row2.dom = Array.from(row2.dom);
+    row2.dom.forEach(element => {
+        element.addEventListener("click", playGame)
+    });
 
     row3.dom = document.querySelector(".row3");
     row3.dom = row3.dom.children;
+    row3.dom = Array.from(row3.dom);
+    row3.dom.forEach(element => {
+        element.addEventListener("click", playGame)
+    });
 
     return {row1, row2, row3}
 })();
@@ -188,13 +218,22 @@ function checkWinDiagonals(){
 }
 
 function playGame(){
-    const players = setPlayers();
+    let players;
+    if (this.textContent == "Play!"){
+        players = setPlayers();
+    }
     console.log(players);
     console.table(gameboard);
     let player;
-    let lastPlayed = null;
-    
-    while(true){
+    if (gameboard.lastPlayed === "p1"){
+        player = "p2";
+    } else {
+        player = "p1";
+    }
+    console.log(this)
+
+
+   /*  while(true){
         if (lastPlayed === "p1"){
             player = "p2";
         } else {
@@ -216,12 +255,11 @@ function playGame(){
 
         if (checkWinRows() || checkWinColumns() || checkWinDiagonals()) {
             console.log(`Winner is ${lastPlayed}`);
-            console.table(gameboard);
             break;
         } else if (checkWinRows() == "tie" || checkWinColumns() == "tie" || checkWinDiagonals() == "tie"){
-            console.table(gameboard);
-            console.log("It's a tie!")
+            console.log("It's a tie!");
             break;
         }
     }
+    console.table(gameboard); */
 }
