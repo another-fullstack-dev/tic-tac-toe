@@ -1,3 +1,5 @@
+// 6 months after and i dont have a clue what am i looking at. i hate myself.
+
 const gameboard = (function() {
     // why not put rows in an object as well?
     const row1 = [null, null, null];
